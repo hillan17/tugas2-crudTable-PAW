@@ -19,7 +19,18 @@ if (isset($_POST['tombol_simpan'])) {
     $name = $_POST['name'];
     $gender = $_POST['gender'];
     $major = $_POST['major'];
-    $hobby = isset($_POST['hobby']) ? implode(", ", $_POST['hobby']) : "";
+    $hobbies = array();
+
+    if (isset($_POST['hobby']) && is_array($_POST['hobby'])) {
+        $hobbies = $_POST['hobby'];
+    }
+
+    if (!empty($_POST['hobby_lainnya'])) {
+        $hobbies[] = trim($_POST['hobby_lainnya']);
+    }
+
+    $hobbies = array_filter($hobbies, 'strlen'); 
+    $hobby = implode(", ", $hobbies); 
 
     if ($id == "") {
         $insert = "INSERT INTO student (nim, name, gender, major, hobby) VALUES (:nim, :name, :gender, :major, :hobby)";
